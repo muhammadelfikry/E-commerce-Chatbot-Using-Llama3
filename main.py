@@ -1,10 +1,15 @@
 from flask import Flask, request, jsonify
 from groq import Groq
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
+
 client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
+    api_key=os.getenv("GROQ_API_KEY"),
 )
+
+port = int(os.getenv("PORT"))
 
 app = Flask(__name__)
 
@@ -31,4 +36,4 @@ def chat():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=port)
