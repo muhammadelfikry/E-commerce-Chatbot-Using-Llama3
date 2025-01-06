@@ -16,10 +16,17 @@ app = Flask(__name__)
 @app.route("/api/chat", methods=["POST"])
 def chat():
     try:
+        with open("knowledge_base.txt", "r") as file:
+            context = file.read()
+
         user_input = request.json.get("message")
 
         chat_completion = client.chat.completions.create(
             messages=[
+                {
+                    "role": "system",
+                    "content": context
+                },
                 {
                     "role": "user",
                     "content": user_input,
